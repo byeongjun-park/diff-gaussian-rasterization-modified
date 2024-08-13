@@ -341,15 +341,15 @@ renderCUDA(
 			// Obtain alpha by multiplying with Gaussian opacity
 			// and its exponential falloff from mean.
 			// Avoid numerical instabilities (see paper appendix). 
-			float alpha = min(0.99f, con_o.w * exp(power));
-// 			if (alpha < 1.0f / 255.0f)
-// 				continue;
+			float alpha = min(0.9999f, con_o.w * exp(power));
+			if (alpha < 1.0f / 255.0f)
+				continue;
 			float test_T = T * (1 - alpha);
-// 			if (test_T < 0.0001f)
-// 			{
-// 				done = true;
-// 				continue;
-// 			}
+			if (test_T < 0.0001f)
+			{
+				done = true;
+				continue;
+			}
 
 			// Eq. (3) from 3D Gaussian splatting paper.
 			for (int ch = 0; ch < CHANNELS; ch++)

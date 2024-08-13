@@ -496,9 +496,9 @@ renderCUDA(
 				continue;
 
 			const float G = exp(power);
-			const float alpha = min(0.99f, con_o.w * G);
-// 			if (alpha < 1.0f / 255.0f)
-// 				continue;
+			const float alpha = min(0.9999f, con_o.w * G);
+			if (alpha < 1.0f / 255.0f)
+				continue;
 
 			T = T / (1.f - alpha);
 			const float dchannel_dcolor = alpha * T;
