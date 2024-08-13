@@ -328,6 +328,12 @@ renderCUDA(
 			// Keep track of current position in range
 			contributor++;
 
+			if (T < 0.0001f)
+			{
+				done = true;
+				continue;
+			}
+
 			// Resample using conic matrix (cf. "Surface 
 			// Splatting" by Zwicker et al., 2001)
 			float2 xy = collected_xy[j];
@@ -344,17 +350,12 @@ renderCUDA(
 			float alpha = min(0.9999f, con_o.w * exp(power));
 			if (alpha < 1.0f / 255.0f)
 				continue;
-			float test_T = T * (1 - alpha);
-			if (test_T < 0.0001f)
-			{
-				done = true;
-				continue;
-			}
 
 			// Eq. (3) from 3D Gaussian splatting paper.
 			for (int ch = 0; ch < CHANNELS; ch++)
 				C[ch] += features[collected_id[j] * CHANNELS + ch] * alpha * T;
 
+			float test_T = T * (1 - alpha);
 			T = test_T;
 
 			// Keep track of last range entry to update this
